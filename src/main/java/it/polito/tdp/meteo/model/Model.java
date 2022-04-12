@@ -68,24 +68,33 @@ public class Model {
 	}
 
 	private boolean isValid(List<Citta> parziale, Citta prova) {
+		//verifica giorni massimi
+		//contiamo quante volte la città 'prova' era già apparsa nell'attuale lista costruita fin qui
 		int conta = 0;
 		for (Citta c : parziale) {
 			if (c.equals(prova)) {
 				conta++;
 			}
 		}
+		//se supero giorni max sono out
 		if (conta >= NUMERO_GIORNI_CITTA_MAX) {
 			return false;
 		}
-		if (parziale.size() == 0) {
+		// verifica dei giorni minimi
+		if (parziale.size() == 0) { //primo giorno posso inserire qualsiasi città
 			return true;
 		}
 		if (parziale.size() == 1 || parziale.size() == 2) {
+			//siamo al secondo o terzo giorno, non posso cambiare
+			//quindi l'aggiunta è valida solo se la città di prova coincide con la sua precedente
 			return parziale.get(parziale.size() - 1).equals(prova);
 		}
+		//nel caso generale, se ho già passato i controlli sopra, non c'è nulla che mi vieta di rimanere nella stessa città
+		//quindi per i giorni successivi ai primi tre posso sempre rimanere
 		if (parziale.get(parziale.size() - 1).equals(prova)) {
 			return true;
 		}
+		// se cambio città mi devo assicurare che nei tre giorni precedenti sono rimasto fermo 
 		if (parziale.get(parziale.size() - 1).equals(parziale.get(parziale.size() - 2))
 				&& parziale.get(parziale.size() - 2).equals(parziale.get(parziale.size() - 3))) {
 			return true;
